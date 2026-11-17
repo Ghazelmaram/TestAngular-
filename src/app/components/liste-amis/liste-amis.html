@@ -1,0 +1,31 @@
+
+<section class="card" id="amis">
+  <div class="icon">👥</div>
+
+  <div>
+    <h2>Liste des amis</h2>
+
+    <input
+      type="text"
+      [(ngModel)]="newFriend"
+      placeholder="Nom du nouvel ami"
+    />
+
+    <button (click)="addFriend()">
+      Ajouter
+    </button>
+
+    <ul>
+      @for (friend of friends; track friend.id) {
+        <li>
+          {{ friend.name }}
+          <button (click)="deleteFriend(friend.id)">
+            Supprimer
+          </button>
+        </li>
+      } @empty {
+        <li>Aucun ami enregistré.</li>
+      }
+    </ul>
+  </div>
+</section>
