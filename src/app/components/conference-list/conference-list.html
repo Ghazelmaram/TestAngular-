@@ -10,10 +10,9 @@
 
     <!-- Contrôle de flux natif : @if / @else -->
     @if (conferences.length === 0) {
-      <!-- Aucune conférence enregistrée -->
       <p class="empty">Aucune conférence n'est enregistrée pour le moment.</p>
     } @else {
-      <!-- Two-way data binding : la saisie met à jour searchTerm et la liste se filtre -->
+      <!-- Two-way data binding -->
       <input
         class="search"
         type="text"
@@ -22,29 +21,23 @@
       />
 
       <div class="grid">
-        <!-- Contrôle de flux natif : @for avec track + @empty -->
         @for (conf of filteredConferences; track conf.id) {
-          <article class="conf-card" (click)="toggleDetails(conf.id)">
-            <!-- Pipe uppercase : affichage en majuscules sans modifier la donnée -->
+          <!-- Le clic sélectionne la conférence ; [class.selected] met la carte en évidence -->
+          <article
+            class="conf-card"
+            [class.selected]="selectedConference?.id === conf.id"
+            (click)="selectConference(conf)">
             <h3>{{ conf.title | uppercase }}</h3>
 
-            <!-- Pipe date : formatage de la date -->
             <p><strong>Date :</strong> {{ conf.date | date: 'dd/MM/yyyy' }}</p>
             <p><strong>Lieu :</strong> {{ conf.place }}</p>
             <p><strong>Places restantes :</strong> {{ remainingPlaces(conf) }}</p>
 
-            <!-- Détails affichés seulement pour la conférence sélectionnée -->
-            @if (selectedId === conf.id) {
-              <p class="details">{{ conf.description }}</p>
-              <p class="details">Participants : {{ conf.nbParticipants }} / {{ conf.maxParticipants }}</p>
-            }
-
-            <!-- Directive ngClass : vert / orange / rouge selon les places restantes -->
             <button
               class="btn"
               [ngClass]="buttonClass(conf)"
               [disabled]="remainingPlaces(conf) <= 0"
-              (click)="register(conf, $event)">
+              (click)="registerFromCard(conf, $event)">
               S'inscrire
             </button>
           </article>
@@ -53,5 +46,13 @@
         }
       </div>
     }
+
+    <!-- COMPOSANT FILS -->
+    <!-- ① [conference] = Input  : le père envoie la conférence sélectionnée au fils -->
+    <!-- ② (register)   = Output : le fils prévient le père quand on clique sur « S'inscrire » -->
+    <app-conference-details
+      [conference]="selectedConference"
+      (register)="register($event)">
+    </app-conference-details>
   </div>
 </section>

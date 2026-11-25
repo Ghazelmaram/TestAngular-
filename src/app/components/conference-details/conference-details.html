@@ -1,0 +1,27 @@
+<section class="details-card">
+  <div class="details-icon">🎤</div>
+
+  <div class="details-body">
+    <h2>Détail de la conférence</h2>
+
+    <!-- conference() : on lit l'input (c'est un signal) avec des parenthèses -->
+    @if (conference(); as conf) {
+      <p class="badge">Conférence sélectionnée depuis la liste.</p>
+
+      <p><strong>Titre :</strong> {{ conf.title }}</p>
+      <p><strong>Description :</strong> {{ conf.description }}</p>
+      <p><strong>Lieu :</strong> {{ conf.place }}</p>
+      <p><strong>Date :</strong> {{ conf.date | date: 'yyyy-MM-dd' }}</p>
+      <p><strong>Places disponibles :</strong> {{ remainingPlaces(conf) }}</p>
+
+      <button
+        class="btn-register"
+        [disabled]="remainingPlaces(conf) <= 0"
+        (click)="onRegister()">
+        S'inscrire
+      </button>
+    } @else {
+      <p class="empty">Aucune conférence sélectionnée. Cliquez sur une conférence dans la liste.</p>
+    }
+  </div>
+</section>

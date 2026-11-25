@@ -3,10 +3,11 @@ import { DatePipe, NgClass, UpperCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { Conference } from '../../models/conference';
+import { ConferenceDetails } from '../conference-details/conference-details';
 
 @Component({
   selector: 'app-conference-list',
-  imports: [FormsModule, NgClass, UpperCasePipe, DatePipe],
+  imports: [ConferenceDetails, FormsModule, NgClass, UpperCasePipe, DatePipe],
   templateUrl: './conference-list.html',
   styleUrl: './conference-list.css'
 })
@@ -15,8 +16,8 @@ export class ConferenceList {
   // Texte saisi dans la barre de recherche (two-way binding avec [(ngModel)])
   searchTerm: string = '';
 
-  // Id de la conférence dont on affiche les détails (null = aucune)
-  selectedId: number | null = null;
+  // Conférence sélectionnée : elle est envoyée au composant fils ConferenceDetails
+  selectedConference: Conference | null = null;
 
   conferences: Conference[] = [
     {
@@ -85,16 +86,22 @@ export class ConferenceList {
     return 'btn-available';   // vert
   }
 
-  // Event binding : affiche / masque les détails d'une conférence
-  toggleDetails(id: number): void {
-    this.selectedId = this.selectedId === id ? null : id;
+  // Clic sur une carte : on mémorise la conférence choisie
+  // → elle est transmise au fils grâce à [conference]="selectedConference"
+  selectConference(conf: Conference): void {
+    this.selectedConference = conf;
   }
 
-  // Event binding : +1 participant à chaque clic (tant qu'il reste des places)
-  register(conf: Conference, event: Event): void {
-    event.stopPropagation(); // évite d'ouvrir/fermer les détails en cliquant sur le bouton
+  // +1 participant (appelée par le bouton de la carte ET par le fils via (register))
+  register(conf: Conference): void {
     if (this.remainingPlaces(conf) > 0) {
       conf.nbParticipants++;
     }
+  }
+
+  // Bouton « S'inscrire » d'une carte : stopPropagation évite de sélectionner la carte
+  registerFromCard(conf: Conference, event: Event): void {
+    event.stopPropagation();
+    this.register(conf);
   }
 }

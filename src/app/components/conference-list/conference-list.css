@@ -109,3 +109,8 @@
   background: #c62828; /* rouge */
   cursor: not-allowed;
 }
+
+.conf-card.selected {
+  border-color: #93c5fd;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.15);
+}

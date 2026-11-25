@@ -1,0 +1,58 @@
+.details-card {
+  background: white;
+  border-left: 5px solid #7c3aed;
+  border-radius: 14px;
+  padding: 24px;
+  margin-top: 24px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+}
+
+.details-icon {
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #f1e9ff;
+  font-size: 28px;
+}
+
+.details-body h2 {
+  margin: 6px 0 16px;
+  color: #173b67;
+}
+
+.badge {
+  display: inline-block;
+  background: #eaf3ff;
+  color: #1d5fa3;
+  font-weight: bold;
+  padding: 8px 14px;
+  border-radius: 8px;
+  margin-bottom: 18px;
+}
+
+.empty {
+  color: #6b7280;
+  font-style: italic;
+}
+
+.btn-register {
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  background: #173b67;
+  color: #fff;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+}
+
+.btn-register:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
